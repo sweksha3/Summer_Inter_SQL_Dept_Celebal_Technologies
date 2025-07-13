@@ -1,36 +1,36 @@
-Problem 1: Recyclabel and Low Fat Products (https://leetcode.com/problems/recyclable-and-low-fat-products/)
+Problem 1: 1757 : Recyclabel and Low Fat Products (https://leetcode.com/problems/recyclable-and-low-fat-products/)
 SELECT product_id FROM products 
 WHERE low_fats='Y' AND recyclable='Y';
 
-Problem 2: Find Customer Referee (https://leetcode.com/problems/find-customer-referee/)
+Problem 2: 584 : Find Customer Referee (https://leetcode.com/problems/find-customer-referee/)
 SELECT name FROM Customer 
 WHERE referee_id!=2 OR referee_id is NULL;
 
-Problem 3: Big Countries (https://leetcode.com/problems/big-countries/)
+Problem 3: 595 : Big Countries (https://leetcode.com/problems/big-countries/)
 SELECT name, population, area FROM World 
 WHERE area>=3000000 OR population>=25000000;
 
-Problem 4: Article Views I (https://leetcode.com/problems/article-views-i/)
+Problem 4: 1148 : Article Views I (https://leetcode.com/problems/article-views-i/)
 SELECT distinct(author_id) as id FROM Views 
 WHERE author_id = viewer_id order by author_id;
 
-Problem 5: Invalid Tweets (https://leetcode.com/problems/invalid-tweets/)
+Problem 5: 1683 : Invalid Tweets (https://leetcode.com/problems/invalid-tweets/)
 SELECT tweet_id FROM Tweets 
 WHERE char_length(content)>15;
 
-Problem 6: Replace Employee Id with the Unique Identifier (https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/)
+Problem 6: 1378 : Replace Employee Id with the Unique Identifier (https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/)
 SELECT unique_id,name FROM Employees 
 LEFT JOIN EmployeeUNI USING(id);
 
-Problem 7: Product Sales Analysis I (https://leetcode.com/problems/product-sales-analysis-i/)
+Problem 7: 1068 : Product Sales Analysis I (https://leetcode.com/problems/product-sales-analysis-i/)
 SELECT product_name, year, price FROM Sales 
 LEFT JOIN Product USING(product_id);
 
-Problem 8: Customer Who Visited but Did Not Make Any Transactions (https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/)
+Problem 8: 1581 : Customer Who Visited but Did Not Make Any Transactions (https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/)
 SELECT customer_id,count(visit_id) as count_no_trans FROM visits 
 LEFT JOIN transactions USING(visit_id) 
 WHERE transaction_id is NULL GROUP BY customer_id;
 
-Problem 9: Rising Temperature (https://leetcode.com/problems/rising-temperature/)
+Problem 9: 197 : Rising Temperature (https://leetcode.com/problems/rising-temperature/)
 SELECT W1.Id FROM Weather w1, Weather w2 
 WHERE dateDiff(w1.recordDate,w2.recordDate) = 1 AND w1.Temperature > w2.Temperature;
