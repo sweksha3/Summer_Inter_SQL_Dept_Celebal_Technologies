@@ -1,0 +1,110 @@
+---------------------------------------------------------------------Employee Hierarchy Generation------------------------------------------------------------------
+
+--Problem Statement--
+
+You are tasked with creating a stored procedure to generate an employee hierarchy based on the data stored in the 'EMPLOYEE_MASTER' table.
+Additionally, you need to create a table named 'Employee_Hierarchy' to store the final hierarchy output.
+
+The 'EMPLOYEE_MASTER' table contains information about employees, including their 'EmployeeID',
+the ID of the employee they report to ('ReportingTo'), and their email address ('EmailID'). 
+However, the email addresses need to be split into first and last names, excluding the domain name.
+
+
+Here are the specific requirements
+
+## Stored Procedure ('SP_hierarchy')--
+- Create a stored procedure named 'SP_hierarchy' to generate the employee hierarchy.
+- The procedure should truncate the 'Employee_Hierarchy' table before processing to ensure a fresh insertion of the hierarchy data.
+- The hierarchy should be generated recursively, starting from employees who do not report to anyone (i.e., have NULL in the 'ReportingTo' column).
+- For each employee in the hierarchy, calculate their level in the hierarchy.
+- Split the email addresses into first and last names (excluding the domain name) and store them in separate columns.
+- Insert the final hierarchy data into the 'Employee_Hierarchy' table.
+
+## Employee_Hierarchy Table : Create a table named 'Employee_Hierarchy' with the following schema:
+
+- EMPLOYEEID : VARCHAR(20)   
+- REPORTINGTO : NVARCHAR(MAX) 
+- EMAILID : NVARCHAR(MAX)
+- LEVEL : INT          
+- FIRSTNAME : NVARCHAR(MAX)
+- LASTNAME : NVARCHAR(MAX) 
+
+## Functions : Create two functions to extract first and last names from email addresses:
+
+- Function to extract the first name: [FIRST_NAME]
+- Function to extract the last name: [LAST_NAME]
+
+
+## Sample Input Table: Employee_Master
+
+ -------------------------------------------------------------
+| EmployeeID | ReportingTo      | EmailID                     |
+|------------|------------------|---------------------------  |
+| H1         | NULL             | john.doe@example.com        |
+| H2         | NULL             | jane.smith@example.com      |
+| H3         | John Smith H1    | alice.jones@example.com     |
+| H4         | Jane Doe H1      | bob.white@example.com       |
+| H5         | John Smith H3    | charlie.brown@example.com   |
+| H6         | Jane Doe H3      | david.green@example.com     |
+| H7         | John Smith H4    | emily.gray@example.com      |
+| H8         | Jane Doe H4      | frank.wilson@example.com    |
+| H9         | John Smith H5    | george.harris@example.com   |
+| H10        | Jane Doe H5      | hannah.taylor@example.com   |
+| H11        | John Smith H6    | irene.martin@example.com    |
+| H12        | Jane Doe H6      | jack.roberts@example.com    |
+| H13        | John Smith H7    | kate.evans@example.com      |
+| H14        | Jane Doe H7      | laura.hall@example.com      |
+| H15        | John Smith H8    | mike.anderson@example.com   |
+| H16        | Jane Doe H8      | natalie.clark@example.com   |
+| H17        | John Smith H9    | oliver.davis@example.com    |
+| H18        | Jane Doe H9      | peter.edwards@example.com   |
+| H19        | John Smith H10   | quinn.fisher@example.com    |
+| H20        | Jane Doe H10     | rachel.garcia@example.com   |
+| H21        | John Smith H11   | sarah.hernandez@example.com |
+| H22        | Jane Doe H11     | thomas.lee@example.com      |
+| H23        | John Smith H12   | ursula.lopez@example.com    |
+| H24        | Jane Doe H12     | victor.martinez@example.com |
+| H25        | John Smith H13   | william.nguyen@example.com  |
+| H26        | Jane Doe H13     | xavier.ortiz@example.com    |
+| H27        | John Smith H14   | yvonne.perez@example.com    |
+| H28        | Jane Doe H14     | zoe.quinn@example.com       |
+| H29        | John Smith H15   | adam.robinson@example.com   |
+| H30        | Jane Doe H15     | barbara.smith@example.com   |
+ -------------------------------------------------------------
+
+## Sample Output Table: Employee_Hierarchy
+
+ ----------------------------------------------------------------------------------------------
+| EmployeeID | ReportingTo       | EmailID                     | Level | FirstName | LastName  |
+|------------|-------------------|-----------------------------|-------|-----------|-----------|
+| H1         | NULL              | john.doe@example.com        | 1     | john      | doe       |
+| H2         | NULL              | jane.smith@example.com      | 1     | jane      | smith     |
+| H3         | John Smith H1     | alice.jones@example.com     | 2     | alice     | jones     |
+| H4         | Jane Doe H1       | bob.white@example.com       | 2     | bob       | white     | 
+| H7         | John Smith H4     | emily.gray@example.com      | 3     | emily     | gray      |
+| H8         | Jane Doe H4       | frank.wilson@example.com    | 3     | frank     | wilson    |
+| H15        | John Smith H8     | mike.anderson@example.com   | 4     | mike      | anderson  |
+| H16        | Jane Doe H8       | natalie.clark@example.com   | 4     | natalie   | clark     |
+| H29        | John Smith H15    | adam.robinson@example.com   | 5     | adam      | robinson  |
+| H30        | Jane Doe H15      | barbara.smith@example.com   | 5     | barbara   | smith     | 
+| H13        | John Smith H7     | kate.evans@example.com      | 4     | kate      | evans     |
+| H14        | Jane Doe H7       | laura.hall@example.com      | 4     | laura     | hall      |
+| H27        | John Smith H14    | yvonne.perez@example.com    | 5     | yvonne    | perez     |
+| H28        | Jane Doe H14      | zoe.quinn@example.com       | 5     | zoe       | quinn     |
+| H25        | John Smith H13    | william.nguyen@example.com  | 5     | william   | nguyen    | 
+| H26        | Jane Doe H13      | xavier.ortiz@example.com    | 5     | xavier    | ortiz     |
+| H5         | John Smith H3     | charlie.brown@example.com   | 3     | charlie   | brown     |
+| H6         | Jane Doe H3       | david.green@example.com     | 3     | david     | green     |
+| H11        | John Smith H6     | irene.martin@example.com    | 4     | irene     | martin    |
+| H12        | Jane Doe H6       | jack.roberts@example.com    | 4     | jack      | roberts   |
+| H23        | John Smith H12    | ursula.lopez@example.com    | 5     | ursula    | lopez     |
+| H24        | Jane Doe H12      | victor.martinez@example.com | 5     | victor    | martinez  |
+| H21        | John Smith H11    | sarah.hernandez@example.com | 5     | sarah     | hernandez |
+| H22        | Jane Doe H11      | thomas.lee@example.com      | 5     | thomas    | lee       | 
+| H9         | John Smith H5     | george.harris@example.com   | 4     | george    | harris    |
+| H10        | Jane Doe H5       | hannah.taylor@example.com   | 4     | hannah    | taylor    |
+| H19        | John Smith H10    | quinn.fisher@example.com    | 5     | quinn     | fisher    |
+| H20        | Jane Doe H10      | rachel.garcia@example.com   | 5     | rachel    | garcia    |
+| H17        | John Smith H9     | oliver.davis@example.com    | 5     | oliver    | davis     |
+| H18        | Jane Doe H9       | peter.edwards@example.com   | 5     | peter     | edwards   |
+ ----------------------------------------------------------------------------------------------
